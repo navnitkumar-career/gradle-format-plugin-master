@@ -1,0 +1,51 @@
+plugins{
+    id 'groovy'
+    id 'maven'
+    id "com.gradle.plugin-publish" version "0.9.1"
+}
+
+group = 'com.github.youribonnaffe.gradle.format'
+version = '1.5'
+
+sourceCompatibility = 1.7
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    compile gradleApi()
+    compile localGroovy()
+    compile 'org.eclipse.tycho:org.eclipse.jdt.core:3.11.1.v20150902-1521'
+    compile 'org.eclipse.text:org.eclipse.text:3.5.101'
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives sourcesJar
+}
+
+pluginBundle {
+    website = 'https://github.com/youribonnaffe/gradle-format-plugin'
+    vcsUrl = 'https://github.com/youribonnaffe/gradle-format-plugin'
+    description = 'Format Java source code and sort imports using Eclipse formatter'
+    tags = ['java', 'format', 'imports', 'eclipse']
+
+    plugins {
+        formatPlugin {
+            id = 'com.github.youribonnaffe.gradle.format'
+            displayName = 'Gradle Format plugin'
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion '2.11'
+    distributionUrl "https://services.gradle.org/distributions/gradle-${gradleVersion}-all.zip"
+}
+
